@@ -1,22 +1,16 @@
 import React, { useContext } from "react";
-import Todo from "./Todo";
-import { options } from "../App";
-import { ThemeContext } from "./ThemeProvider";
-import "../css/TodoList.css";
-import { withScroll } from "../HOC/withScroll";
-import propsTypes from "prop-types";
+import Todo from "../Todo/Todo";
+import { options } from "../../App";
+import { ThemeContext } from "../Theme/ThemeProvider";
+import "./TodoList.css";
+import { withScroll } from "../../HOC/withScroll";
+import { useSelector } from 'react-redux';
+
 
 const TodoList = React.forwardRef((props, ref) => {
-  const {
-    todoList,
-    myOption,
-    editTodoItem,
-    changeIsCompleted,
-    deleteTodoItem,
-    requestUpdate,
-    numberTodo,
-    loadingState,
-  } = props;
+  const todoList = useSelector(state => state.todoList);
+  const myOption = useSelector(state => state.myOption);
+  const { numberTodo, loadingState } = props;
 
   const displayTodoList = () => {
     const todoListDisplay = [];
@@ -32,10 +26,7 @@ const TodoList = React.forwardRef((props, ref) => {
           <Todo
             key={todoList[i].id}
             todo={todoList[i]}
-            editTodoItem={editTodoItem}
-            changeIsCompleted={changeIsCompleted}
-            deleteTodoItem={deleteTodoItem}
-            requestUpdate={requestUpdate}
+            requestUpdate={props.requestUpdate}
           />
         );
       }
@@ -52,20 +43,11 @@ const TodoList = React.forwardRef((props, ref) => {
         ref={ref}
         style={{ maxHeight: "200px", overflowY: "scroll" }}
       >
-        {displayTodoList()}
+        { displayTodoList() }
       </ul>
       {loadingState ? <p className="loading">Loading more todo...</p> : ""}
     </div>
   );
 });
 
-TodoList.propTypes = {
-  myOption: propsTypes.string,
-  editTodoItem: propsTypes.func,
-  changeIsCompleted: propsTypes.func,
-  deleteTodoItem: propsTypes.func,
-  requestUpdate: propsTypes.func,
-  numberTodo: propsTypes.number,
-  loadingState: propsTypes.bool,
-}
 export default withScroll(TodoList);

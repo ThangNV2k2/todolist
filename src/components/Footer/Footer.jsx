@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { options } from '../App';
-import { ThemeContext } from './ThemeProvider';
-import '../css/Footer.css';
+import { options } from '../../App';
+import { ThemeContext } from '../Theme/ThemeProvider';
+import './Footer.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteAllCompleted, changeOption } from '../../redux/actions';
 
-function Footer(props) {
+function Footer() {
   const [cntTodo, setCntTodo] = useState(0);
-  const { todoList, deleteAllTodoItem, myOption, changeOption } = props;
+  const todoList = useSelector(state => state.todoList);
+  const myOption = useSelector(state => state.myOption);
+  const dispatch = useDispatch();
   const theme = useContext(ThemeContext);
   
   useEffect(() => {
@@ -24,15 +28,15 @@ function Footer(props) {
         <div className="Footer--left">
           <p>{cntTodo} items left</p>
           <div className="btns">
-            <button className={`btn ${myOption === options.All ? 'act' : ''}`} onClick={() => changeOption(options.All)}>
+            <button className={`btn ${myOption === options.All ? 'act' : ''}`} onClick={() => dispatch(changeOption(options.All))}>
               All
             </button>
-            <button className={`btn ${myOption === options.Active ? 'act' : ''}`} onClick={() => changeOption(options.Active)}>
+            <button className={`btn ${myOption === options.Active ? 'act' : ''}`} onClick={() => dispatch(changeOption(options.Active))}>
               Active
             </button>
             <button
               className={`btn ${myOption === options.Completed ? 'act' : ''}`}
-              onClick={() => changeOption(options.Completed)}
+              onClick={() => dispatch(changeOption(options.Completed))}
             >
               Completed
             </button>
@@ -41,7 +45,7 @@ function Footer(props) {
       )}
       <div className="Footer--right">
         {todoList.length - cntTodo > 0 && (
-          <button className="clearBtn" onClick={deleteAllTodoItem}>
+          <button className="clearBtn" onClick={() => dispatch(deleteAllCompleted())}>
             Clear completed
           </button>
         )}

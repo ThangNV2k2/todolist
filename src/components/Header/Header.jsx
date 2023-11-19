@@ -5,14 +5,16 @@ import React, {
   useContext,
 } from "react";
 import { v4 as uuidv4 } from "uuid";
-import "../css/Header.css";
-import { ThemeContext } from "./ThemeProvider";
+import "./Header.css";
+import { ThemeContext } from "../Theme/ThemeProvider";
+import { useDispatch } from 'react-redux';
+import { addTodo, editTodoItem } from '../../redux/actions';
 
 const Header = React.forwardRef((props, ref) => {
   const inputRef = useRef();
   const idUpdate = useRef(null);
   const [value, setValue] = useState("");
-  const {addTodo, editTodoItem} = props;
+  const dispatch = useDispatch();
   const eventSubmit = (e) => {
     if (e.code === "Enter") {
       if (value.trim() !== "") {
@@ -21,7 +23,7 @@ const Header = React.forwardRef((props, ref) => {
           content: value.trim(),
           isCompleted: false,
         };
-        addTodo(todo);
+        dispatch(addTodo(todo));
         setValue("");
       }
     }
@@ -36,7 +38,7 @@ const Header = React.forwardRef((props, ref) => {
   const eventUpdate = (e) => {
     if (e.code === "Enter") {
       if (value.trim() !== "") {
-        editTodoItem(idUpdate.current, value);
+        dispatch(editTodoItem(idUpdate.current, value));
         setValue("");
         idUpdate.current = null;
       }

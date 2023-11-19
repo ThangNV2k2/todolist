@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { ThemeContext } from "./ThemeProvider";
-import "../css/Theme.css";
+import "./Theme.css";
 
 export default function Theme() {
   const { theme, toggleTheme } = useContext(ThemeContext);

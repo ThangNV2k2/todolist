@@ -1,16 +1,13 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
-import { ThemeContext } from "./ThemeProvider";
-import "../css/Todo.css";
-import propsTypes from "prop-types";
+import { ThemeContext } from "../Theme/ThemeProvider";
+import "./Todo.css";
+import { useDispatch } from 'react-redux';
+import { deleteTodoItem, editTodoItem, changeIsCompleted } from '../../redux/actions';
+
 function Todo(props) {
-  const {
-    todo,
-    changeIsCompleted,
-    requestUpdate,
-    deleteTodoItem,
-    editTodoItem,
-  } = props;
+  const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
+  const { todo, requestUpdate } = props;
   const [value, setValue] = useState(todo.content);
   const inputRef = useRef();
   const theme = useContext(ThemeContext);
@@ -25,7 +22,7 @@ function Todo(props) {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       setIsEditing(false);
-      editTodoItem(todo.id, e.target.value);
+      dispatch(editTodoItem(todo.id, e.target.value));
     }
   };
 
@@ -51,7 +48,7 @@ function Todo(props) {
                 id={todo.id}
                 className="checkbox"
                 checked={todo.isCompleted}
-                onChange={() => changeIsCompleted(todo.id)}
+                onChange={() => dispatch(changeIsCompleted(todo.id))}
               />
               <i className="fa-solid fa-check"></i>
             </label>
@@ -70,7 +67,7 @@ function Todo(props) {
               ></i>
               <i
                 className="fa-solid fa-trash"
-                onClick={() => deleteTodoItem(todo.id)}
+                onClick={() => dispatch(deleteTodoItem(todo.id))}
               ></i>
             </div>
           </div>
@@ -79,11 +76,6 @@ function Todo(props) {
     </li>
   );
 }
-Todo.propTypes = {
-  Todo: propsTypes.object,
-  changeIsCompleted: propsTypes.func,
-  requestUpdate: propsTypes.func,
-  deleteTodoItem: propsTypes.func,
-  editTodoItem: propsTypes.func,
-};
+
+
 export default Todo;
