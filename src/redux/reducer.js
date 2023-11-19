@@ -7,6 +7,7 @@ const initialState = {
     { id: uuidv4(), content: "Học Node", isCompleted: false },
   ],
   myOption: options.All,
+  theme: "light",
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -50,6 +51,10 @@ const rootReducer = (state = initialState, action) => {
       }
       case "DELETE_ALL_COMPLETED": {
         draft.todoList = draft.todoList.filter((todo) => !todo.isCompleted);
+        break;
+      }
+      case "TOGGLE_THEME": {
+        draft.theme = draft.theme === "light" ? "dark" : "light";
         break;
       }
       default: {

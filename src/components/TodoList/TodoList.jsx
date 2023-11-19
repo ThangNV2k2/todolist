@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import Todo from "../Todo/Todo";
 import { options } from "../../App";
-import { ThemeContext } from "../Theme/ThemeProvider";
 import "./TodoList.css";
 import { withScroll } from "../../HOC/withScroll";
 import { useSelector } from 'react-redux';
@@ -10,6 +9,7 @@ import { useSelector } from 'react-redux';
 const TodoList = React.forwardRef((props, ref) => {
   const todoList = useSelector(state => state.todoList);
   const myOption = useSelector(state => state.myOption);
+  const theme = useSelector(state => state.theme);
   const { numberTodo, loadingState } = props;
 
   const displayTodoList = () => {
@@ -34,10 +34,8 @@ const TodoList = React.forwardRef((props, ref) => {
     return todoListDisplay;
   };
 
-  const theme = useContext(ThemeContext);
-
   return (
-    <div className={`${theme.theme}`}>
+    <div className={`${theme}`}>
       <ul
         className="todo-list"
         ref={ref}

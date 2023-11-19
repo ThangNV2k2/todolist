@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, } from 'react';
 import { options } from '../../App';
-import { ThemeContext } from '../Theme/ThemeProvider';
 import './Footer.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAllCompleted, changeOption } from '../../redux/actions';
@@ -9,8 +8,9 @@ function Footer() {
   const [cntTodo, setCntTodo] = useState(0);
   const todoList = useSelector(state => state.todoList);
   const myOption = useSelector(state => state.myOption);
+  
   const dispatch = useDispatch();
-  const theme = useContext(ThemeContext);
+  const theme = useSelector(state => state.theme);
   
   useEffect(() => {
     let cnt = 0;
@@ -23,7 +23,7 @@ function Footer() {
   }, [todoList]);
 
   return (
-    <div className={`Footer ${theme.theme}`}>
+    <div className={`Footer ${theme}`}>
       {todoList.length > 0 && (
         <div className="Footer--left">
           <p>{cntTodo} items left</p>

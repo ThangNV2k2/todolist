@@ -40,3 +40,8 @@ export const deleteAllCompleted = () => {
     type: "DELETE_ALL_COMPLETED",
   };
 }
+export const toggleTheme = () => {
+  return {
+    type: "TOGGLE_THEME",
+  };
+}

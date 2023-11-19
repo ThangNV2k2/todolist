@@ -1,7 +1,6 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
-import { ThemeContext } from "../Theme/ThemeProvider";
+import React, { useState, useRef, useEffect } from "react";
 import "./Todo.css";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteTodoItem, editTodoItem, changeIsCompleted } from '../../redux/actions';
 
 function Todo(props) {
@@ -10,7 +9,7 @@ function Todo(props) {
   const { todo, requestUpdate } = props;
   const [value, setValue] = useState(todo.content);
   const inputRef = useRef();
-  const theme = useContext(ThemeContext);
+  const theme = useSelector(state => state.theme);
 
   const handleDoubleClick = () => setIsEditing(true);
   useEffect(() => {
@@ -55,7 +54,7 @@ function Todo(props) {
           </div>
           <div
             className={`div_content ${
-              !todo.isCompleted ? theme.theme : "content"
+              !todo.isCompleted ? theme : "content"
             }`}
             onDoubleClick={handleDoubleClick}
           >

@@ -1,10 +1,10 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef } from "react";
 import Header from "./components/Header/Header";
 import TodoList from "./components/TodoList/TodoList";
 import Footer from "./components/Footer/Footer";
 import Theme from "./components/Theme/Theme";
-import { ThemeContext } from "./components/Theme/ThemeProvider";
 import "./App.css";
+import { useSelector } from "react-redux";
 
 export const options = {
   All: "All",
@@ -13,8 +13,7 @@ export const options = {
 };
 
 function App() {
-  const themeContext = useContext(ThemeContext);
-  const theme = themeContext.theme;
+  const theme = useSelector(state => state.theme);
   const headerRef = useRef();
   const requestUpdate = (id, content) =>
     headerRef.current.changeUpdate(id, content);

@@ -2,12 +2,10 @@ import React, {
   useState,
   useRef,
   useImperativeHandle,
-  useContext,
 } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./Header.css";
-import { ThemeContext } from "../Theme/ThemeProvider";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addTodo, editTodoItem } from '../../redux/actions';
 
 const Header = React.forwardRef((props, ref) => {
@@ -15,6 +13,7 @@ const Header = React.forwardRef((props, ref) => {
   const idUpdate = useRef(null);
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
+  const theme = useSelector(state => state.theme);
   const eventSubmit = (e) => {
     if (e.code === "Enter") {
       if (value.trim() !== "") {
@@ -45,10 +44,8 @@ const Header = React.forwardRef((props, ref) => {
     }
   };
 
-  const theme = useContext(ThemeContext);
-
   return (
-    <div className={`header ${theme.theme}`}>
+    <div className={`header ${theme}`}>
       <input
         type="text"
         placeholder={!idUpdate.current ? "What needs to be done?" : ""}
