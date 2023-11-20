@@ -1,13 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { produce } from "immer";
-import { options } from "../App";
 const initialState = {
   todoList: [
     { id: uuidv4(), content: "Học React", isCompleted: false },
     { id: uuidv4(), content: "Học Node", isCompleted: false },
   ],
-  myOption: options.All,
-  theme: "light",
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -45,16 +42,8 @@ const rootReducer = (state = initialState, action) => {
         }
         break;
       }
-      case "CHANGE_OPTION": {
-        draft.myOption = action.payload;
-        break;
-      }
       case "DELETE_ALL_COMPLETED": {
         draft.todoList = draft.todoList.filter((todo) => !todo.isCompleted);
-        break;
-      }
-      case "TOGGLE_THEME": {
-        draft.theme = draft.theme === "light" ? "dark" : "light";
         break;
       }
       default: {

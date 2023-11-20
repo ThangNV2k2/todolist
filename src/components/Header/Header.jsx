@@ -5,15 +5,17 @@ import React, {
 } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./Header.css";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addTodo, editTodoItem } from '../../redux/actions';
+import { ThemeContext } from "../Theme/ThemeContext"
+import { useContext } from "react";
 
 const Header = React.forwardRef((props, ref) => {
   const inputRef = useRef();
   const idUpdate = useRef(null);
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
-  const theme = useSelector(state => state.theme);
+  const { theme } = useContext(ThemeContext);
   const eventSubmit = (e) => {
     if (e.code === "Enter") {
       if (value.trim() !== "") {

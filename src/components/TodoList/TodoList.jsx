@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Todo from "../Todo/Todo";
 import { options } from "../../App";
 import "./TodoList.css";
 import { withScroll } from "../../HOC/withScroll";
 import { useSelector } from 'react-redux';
-
+import { ThemeContext } from "../Theme/ThemeContext";
 
 const TodoList = React.forwardRef((props, ref) => {
   const todoList = useSelector(state => state.todoList);
-  const myOption = useSelector(state => state.myOption);
-  const theme = useSelector(state => state.theme);
+  const { myOption } = props;
+  const { theme } = useContext(ThemeContext);
   const { numberTodo, loadingState } = props;
 
   const displayTodoList = () => {

@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useContext} from "react";
 import "./Theme.css";
-import { useSelector, useDispatch } from "react-redux";
+import { ThemeContext } from "./ThemeContext";
 
 export default function Theme() {
-  
-  const theme = useSelector(state => state.theme);
-  const dispatch = useDispatch();
+  const { theme, toggleTheme } = useContext(ThemeContext);
   return (
     <div className="toggle">
       <input
         type="checkbox"
         id="toggleMode"
         checked={theme === "dark"}
-        onChange={() => dispatch({ type: "TOGGLE_THEME" })}
+        onChange={toggleTheme}
         hidden
       />
       <label htmlFor="toggleMode"></label>

@@ -1,17 +1,16 @@
-import React, { useState, useEffect, } from 'react';
+import React, { useState, useEffect, useContext, } from 'react';
 import { options } from '../../App';
 import './Footer.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteAllCompleted, changeOption } from '../../redux/actions';
+import { deleteAllCompleted } from '../../redux/actions';
+import { ThemeContext } from '../Theme/ThemeContext';
 
-function Footer() {
-  const [cntTodo, setCntTodo] = useState(0);
+function Footer(props) {
+  const { theme } = useContext(ThemeContext);
   const todoList = useSelector(state => state.todoList);
-  const myOption = useSelector(state => state.myOption);
-  
+  const [cntTodo, setCntTodo] = useState(0);
+  const { myOption, changeOption } = props
   const dispatch = useDispatch();
-  const theme = useSelector(state => state.theme);
-  
   useEffect(() => {
     let cnt = 0;
     todoList.forEach((e) => {
@@ -28,15 +27,15 @@ function Footer() {
         <div className="Footer--left">
           <p>{cntTodo} items left</p>
           <div className="btns">
-            <button className={`btn ${myOption === options.All ? 'act' : ''}`} onClick={() => dispatch(changeOption(options.All))}>
+            <button className={`btn ${myOption === options.All ? 'act' : ''}`} onClick={() => changeOption(options.All)}>
               All
             </button>
-            <button className={`btn ${myOption === options.Active ? 'act' : ''}`} onClick={() => dispatch(changeOption(options.Active))}>
+            <button className={`btn ${myOption === options.Active ? 'act' : ''}`} onClick={() => changeOption(options.Active)}>
               Active
             </button>
             <button
               className={`btn ${myOption === options.Completed ? 'act' : ''}`}
-              onClick={() => dispatch(changeOption(options.Completed))}
+              onClick={() => changeOption(options.Completed)}
             >
               Completed
             </button>
