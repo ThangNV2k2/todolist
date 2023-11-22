@@ -9,7 +9,7 @@ function Footer(props) {
   const { theme } = useContext(ThemeContext);
   const todoList = useSelector(state => state.todoList);
   const [cntTodo, setCntTodo] = useState(0);
-  const { myOption, changeOption } = props
+  const { myOption, setMyOption } = props
   const dispatch = useDispatch();
   useEffect(() => {
     let cnt = 0;
@@ -27,15 +27,15 @@ function Footer(props) {
         <div className="Footer--left">
           <p>{cntTodo} items left</p>
           <div className="btns">
-            <button className={`btn ${myOption === options.All ? 'act' : ''}`} onClick={() => changeOption(options.All)}>
+            <button className={`btn ${myOption === options.All ? 'act' : ''}`} onClick={() => setMyOption(options.All)}>
               All
             </button>
-            <button className={`btn ${myOption === options.Active ? 'act' : ''}`} onClick={() => changeOption(options.Active)}>
+            <button className={`btn ${myOption === options.Active ? 'act' : ''}`} onClick={() => setMyOption(options.Active)}>
               Active
             </button>
             <button
               className={`btn ${myOption === options.Completed ? 'act' : ''}`}
-              onClick={() => changeOption(options.Completed)}
+              onClick={() => setMyOption(options.Completed)}
             >
               Completed
             </button>

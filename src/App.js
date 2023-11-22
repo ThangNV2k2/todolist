@@ -18,7 +18,6 @@ function App() {
   const [ myOption, setMyOption ] = useState(options.All); 
   const requestUpdate = (id, content) =>
     headerRef.current.changeUpdate(id, content);
-  const changeOption = (option) => setMyOption(option);
   return (
     <div className={`container ${theme}`}>
       <Theme />
@@ -26,7 +25,7 @@ function App() {
       <div className="main">
         <Header ref={headerRef} />
         <TodoList myOption={myOption} requestUpdate={requestUpdate} />
-        <Footer changeOption= {changeOption} myOption={myOption} />
+        <Footer setMyOption= {setMyOption} myOption={myOption} />
       </div>
     </div>
   );
