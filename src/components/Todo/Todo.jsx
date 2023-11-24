@@ -1,8 +1,13 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import "./Todo.css";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { ThemeContext } from "../Theme/ThemeContext";
-import { deleteTodoItem, editTodoItem, changeIsCompleted } from '../../redux/actions';
+import {
+  deleteTodoItem,
+  editTodoItem,
+  changeIsCompleted,
+  swapTodoItem,
+} from "../../redux/actions";
 
 function Todo(props) {
   const dispatch = useDispatch();
@@ -12,6 +17,13 @@ function Todo(props) {
   const inputRef = useRef();
   const { theme } = useContext(ThemeContext);
 
+  const onDragStart = (e, id) => {
+    e.dataTransfer.setData("text/plain", id);
+  };
+  const onDrop = (e, id2) => {
+    const id1 = e.dataTransfer.getData("text/plain");
+    dispatch(swapTodoItem(id1, id2));
+  };
   const handleDoubleClick = () => setIsEditing(true);
   useEffect(() => {
     if (isEditing && inputRef.current) {
@@ -40,7 +52,14 @@ function Todo(props) {
           />
         </div>
       ) : (
-        <div className="todo">
+        <div
+          className="todo"
+          draggable={true}
+          onDragStart={(e) => onDragStart(e, todo.id)}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => onDrop(e, todo.id)}
+          style={{ cursor: "move" }}
+        >
           <div className="todo_check">
             <label className="checkbox_item" htmlFor={todo.id}>
               <input
@@ -54,9 +73,7 @@ function Todo(props) {
             </label>
           </div>
           <div
-            className={`div_content ${
-              !todo.isCompleted ? theme : "content"
-            }`}
+            className={`div_content ${!todo.isCompleted ? theme : "content"}`}
             onDoubleClick={handleDoubleClick}
           >
             <p>{todo.content}</p>
@@ -76,6 +93,5 @@ function Todo(props) {
     </li>
   );
 }
-
 
 export default Todo;

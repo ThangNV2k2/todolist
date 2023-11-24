@@ -17,6 +17,7 @@ export const withScroll = (WrappedComponent) => {
         ) {
           isGetting = true;
           if (numberTodo >= todoList.length) {
+            isGetting = false;
             return;
           }
           setLoadingState(true);
@@ -27,7 +28,6 @@ export const withScroll = (WrappedComponent) => {
           }, 1000);
         }
       };
-
       ref.current.addEventListener("scroll", handleScroll);
       return () => {
         ref.current.removeEventListener("scroll", handleScroll);

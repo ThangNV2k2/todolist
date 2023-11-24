@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { produce } from "immer";
-import { ADD_TODO, DELETE_TODO_ITEM, EDIT_TODO_ITEM, CHANGE_IS_COMPLETED, DELETE_ALL_COMPLETED } from "./actions";
+import { ADD_TODO, DELETE_TODO_ITEM, EDIT_TODO_ITEM, CHANGE_IS_COMPLETED, DELETE_ALL_COMPLETED, SWAP_TODO_ITEM } from "./actions";
 
 const initialState = [
     { id: uuidv4(), content: "Học React", isCompleted: false },
@@ -43,6 +43,15 @@ const rootReducer = (state = initialState, action) => {
       }
       case DELETE_ALL_COMPLETED: {
         return draft.filter(todo => !todo.isCompleted);
+      }
+      case SWAP_TODO_ITEM: {
+        const { id1, id2 } = action.payload;
+        const index1 = draft.findIndex(todo => todo.id === id1);
+        const index2 = draft.findIndex(todo => todo.id === id2);
+        if (index1 !== -1 && index2 !== -1) {
+          [draft[index1], draft[index2]] = [draft[index2], draft[index1]];
+        }
+        break;
       }
       default: {
         break;
