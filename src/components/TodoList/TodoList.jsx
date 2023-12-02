@@ -1,20 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Todo from "../Todo/Todo";
 import { options } from "../../App";
 import "./TodoList.css";
 import { withScroll } from "../../HOC/withScroll";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ThemeContext } from "../Theme/ThemeContext";
-
+import { FETCH_TASK } from "../../redux/task";
 const TodoList = React.forwardRef((props, ref) => {
-  const todoList = useSelector(state => state.todoList);
+  const dispatch = useDispatch();
+  const { todoList } = useSelector(state => state.todoList);
   const { myOption } = props;
   const { theme } = useContext(ThemeContext);
   const { numberTodo, loadingState } = props;
 
   const displayTodoList = () => {
     const todoListDisplay = [];
-    for (let i = 0; i < numberTodo; i++) {
+    for (let i = 0; i < Math.min(numberTodo, todoList.length); i++) {
       if (
         todoList[i] &&
         todoList[i].id &&
@@ -33,7 +34,9 @@ const TodoList = React.forwardRef((props, ref) => {
     }
     return todoListDisplay;
   };
-
+  useEffect(() => {
+    dispatch({ type: FETCH_TASK });
+  }, [dispatch]);
   return (
     <div className={`${theme}`}>
       <ul

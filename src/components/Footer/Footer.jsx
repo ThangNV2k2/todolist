@@ -2,25 +2,31 @@ import React, { useState, useEffect, useContext, } from 'react';
 import { options } from '../../App';
 import './Footer.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteAllCompleted } from '../../redux/actions';
+import { DELETE_TODO_ITEM } from '../../redux/task';
 import { ThemeContext } from '../Theme/ThemeContext';
 
 function Footer(props) {
   const { theme } = useContext(ThemeContext);
-  const todoList = useSelector(state => state.todoList);
+  const { todoList } = useSelector(state => state.todoList);
   const [cntTodo, setCntTodo] = useState(0);
   const { myOption, setMyOption } = props
   const dispatch = useDispatch();
   useEffect(() => {
     let cnt = 0;
-    todoList.forEach((e) => {
-      if (!e.isCompleted) {
+    todoList.forEach((todo) => {
+      if (!todo.isCompleted) {
         cnt++;
       }
     });
     setCntTodo(cnt);
   }, [todoList]);
-
+  const deleteAllCompleted = () => {
+    todoList.forEach((todo) => {
+      if (todo.isCompleted) {
+        dispatch({ type: DELETE_TODO_ITEM, payload: todo.id });
+      }
+    });
+  }
   return (
     <div className={`Footer ${theme}`}>
       {todoList.length > 0 && (
@@ -44,7 +50,7 @@ function Footer(props) {
       )}
       <div className="Footer--right">
         {todoList.length - cntTodo > 0 && (
-          <button className="clearBtn" onClick={() => dispatch(deleteAllCompleted())}>
+          <button className="clearBtn" onClick={deleteAllCompleted}>
             Clear completed
           </button>
         )}

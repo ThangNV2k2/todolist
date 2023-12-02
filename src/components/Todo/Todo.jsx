@@ -2,13 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import "./Todo.css";
 import { useDispatch } from "react-redux";
 import { ThemeContext } from "../Theme/ThemeContext";
-import {
-  deleteTodoItem,
-  editTodoItem,
-  changeIsCompleted,
-  swapTodoItem,
-} from "../../redux/actions";
-
+import { EDIT_TODO_ITEM, SWAP_TODO_ITEM, DELETE_TODO_ITEM } from "../../redux/task";
 function Todo(props) {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
@@ -22,7 +16,7 @@ function Todo(props) {
   };
   const onDrop = (e, id2) => {
     const id1 = e.dataTransfer.getData("text/plain");
-    dispatch(swapTodoItem(id1, id2));
+    dispatch({ type: SWAP_TODO_ITEM, payload: { id1, id2 } });
   };
   const handleDoubleClick = () => setIsEditing(true);
   useEffect(() => {
@@ -34,10 +28,23 @@ function Todo(props) {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       setIsEditing(false);
-      dispatch(editTodoItem(todo.id, e.target.value));
+      const editTodo = {
+        id: todo.id,
+        content: e.target.value,
+        isCompleted: todo.isCompleted,
+      }
+      dispatch({ type: EDIT_TODO_ITEM, payload: editTodo });
     }
   };
-
+  const changeIsCompleted = () => {
+    debugger
+    const editTodo = {
+      id: todo.id,
+      content: todo.content,
+      isCompleted: !todo.isCompleted,
+    }
+    dispatch({ type: EDIT_TODO_ITEM, payload: editTodo });
+  }
   return (
     <li className="todo-item">
       {isEditing ? (
@@ -67,7 +74,7 @@ function Todo(props) {
                 id={todo.id}
                 className="checkbox"
                 checked={todo.isCompleted}
-                onChange={() => dispatch(changeIsCompleted(todo.id))}
+                onChange={changeIsCompleted}
               />
               <i className="fa-solid fa-check"></i>
             </label>
@@ -84,7 +91,7 @@ function Todo(props) {
               ></i>
               <i
                 className="fa-solid fa-trash"
-                onClick={() => dispatch(deleteTodoItem(todo.id))}
+                onClick={() => dispatch({ type: DELETE_TODO_ITEM, payload: todo.id })}
               ></i>
             </div>
           </div>

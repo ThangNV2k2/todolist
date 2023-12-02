@@ -3,28 +3,27 @@ import React, {
   useRef,
   useImperativeHandle,
 } from "react";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import "./Header.css";
-import { useDispatch } from 'react-redux';
-import { addTodo, editTodoItem } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import { ThemeContext } from "../Theme/ThemeContext"
-import { useContext } from "react";
-
+import { useContext } from "react"; 
+import { ADD_TODO, EDIT_TODO_ITEM } from "../../redux/task";
 const Header = React.forwardRef((props, ref) => {
   const inputRef = useRef();
   const idUpdate = useRef(null);
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
+  const { todoList } = useSelector(state => state.todoList);
   const { theme } = useContext(ThemeContext);
   const eventSubmit = (e) => {
     if (e.code === "Enter") {
       if (value.trim() !== "") {
         const todo = {
-          id: uuidv4(),
           content: value.trim(),
           isCompleted: false,
         };
-        dispatch(addTodo(todo));
+        dispatch({ type: ADD_TODO, payload: todo });
         setValue("");
       }
     }
@@ -39,7 +38,12 @@ const Header = React.forwardRef((props, ref) => {
   const eventUpdate = (e) => {
     if (e.code === "Enter") {
       if (value.trim() !== "") {
-        dispatch(editTodoItem(idUpdate.current, value));
+        const editTodo = {
+          id: idUpdate.current,
+          content: value.trim(),
+          isCompleted: todoList.find((todo) => todo.id === idUpdate.current).isCompleted
+        }
+        dispatch({ type: EDIT_TODO_ITEM, payload: editTodo });
         setValue("");
         idUpdate.current = null;
       }
