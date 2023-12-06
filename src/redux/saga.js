@@ -10,8 +10,10 @@ import {
   EDIT_TODO_ITEM_SUCCESS,
   DELETE_TODO_ITEM,
   DELETE_TODO_ITEM_SUCCESS,
-//   DELETE_ALL_COMPLETED,
-//   DELETE_ALL_COMPLETED_SUCCESS,
+  SWAP_TODO_ITEM,
+  SWAP_TODO_ITEM_SUCCESS,
+  //   DELETE_ALL_COMPLETED,
+  //   DELETE_ALL_COMPLETED_SUCCESS,
 } from "./task";
 
 function* fetchTodoList() {
@@ -25,15 +27,24 @@ function* fetchTodoList() {
 function* addTodo(action) {
   try {
     const newTodo = yield call(addTodoItem, action.payload);
-    yield put({ type: ADD_TODO_SUCCESS, payload: { todo: newTodo } });
+    yield put({ type: ADD_TODO_SUCCESS, payload: newTodo });
   } catch (e) {
     console.log(e.message);
   }
 }
 function* editTodo(action) {
   try {
-    yield call(editTodoItem, action.payload);
     yield put({ type: EDIT_TODO_ITEM_SUCCESS, payload: action.payload });
+    yield call(editTodoItem, action.payload);
+  } catch (e) {
+    console.log(e.message);
+  }
+}
+function* swapTodoItem(action) {
+  try {
+    yield put({ type: SWAP_TODO_ITEM_SUCCESS, payload: action.payload });
+    yield call(editTodoItem, action.payload.todo1);
+    yield call(editTodoItem, action.payload.todo2);
   } catch (e) {
     console.log(e.message);
   }
@@ -48,8 +59,8 @@ function* editTodo(action) {
 // }
 function* deleteTodo(action) {
   try {
-    yield call(deleteTodoItem, action.payload);
     yield put({ type: DELETE_TODO_ITEM_SUCCESS, payload: action.payload });
+    yield call(deleteTodoItem, action.payload);
   } catch (e) {
     console.log(e.message);
   }
@@ -72,6 +83,7 @@ function* todosSaga() {
   yield takeEvery(ADD_TODO, addTodo);
   yield takeEvery(EDIT_TODO_ITEM, editTodo);
   yield takeEvery(DELETE_TODO_ITEM, deleteTodo);
+  yield takeEvery(SWAP_TODO_ITEM, swapTodoItem);
   // yield takeEvery(CHANGE_IS_COMPLETED, changeIsCompleted);
   // yield takeEvery(DELETE_ALL_COMPLETED, deleteAllCompleted);
 }

@@ -1,14 +1,16 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Todo from "../Todo/Todo";
 import { options } from "../../App";
 import "./TodoList.css";
 import { withScroll } from "../../HOC/withScroll";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { ThemeContext } from "../Theme/ThemeContext";
 import { FETCH_TASK } from "../../redux/task";
+// import { set } from "immutable";
 const TodoList = React.forwardRef((props, ref) => {
   const dispatch = useDispatch();
-  const { todoList } = useSelector(state => state.todoList);
+  const todoList = useSelector((state) => state.todoList);
+  const [loadingData, setLoadingData] = useState(false);
   const { myOption } = props;
   const { theme } = useContext(ThemeContext);
   const { numberTodo, loadingState } = props;
@@ -35,16 +37,21 @@ const TodoList = React.forwardRef((props, ref) => {
     return todoListDisplay;
   };
   useEffect(() => {
-    dispatch({ type: FETCH_TASK });
-  }, [dispatch]);
+    (async () => {
+      await setLoadingData(true);
+      dispatch({ type: FETCH_TASK });
+      setLoadingData(false);
+    })();
+  }, []);
   return (
     <div className={`${theme}`}>
+      {loadingData ? <p className="loading">Loading todo...</p> : ""}
       <ul
         className="todo-list"
         ref={ref}
         style={{ maxHeight: "200px", overflowY: "scroll" }}
       >
-        { displayTodoList() }
+        {displayTodoList()}
       </ul>
       {loadingState ? <p className="loading">Loading more todo...</p> : ""}
     </div>
