@@ -7,11 +7,8 @@ import {
   ADD_TODO,
   ADD_TODO_SUCCESS,
   EDIT_TODO_ITEM,
-  EDIT_TODO_ITEM_SUCCESS,
   DELETE_TODO_ITEM,
-  DELETE_TODO_ITEM_SUCCESS,
   SWAP_TODO_ITEM,
-  SWAP_TODO_ITEM_SUCCESS,
   //   DELETE_ALL_COMPLETED,
   //   DELETE_ALL_COMPLETED_SUCCESS,
 } from "./task";
@@ -27,14 +24,16 @@ function* fetchTodoList() {
 function* addTodo(action) {
   try {
     const newTodo = yield call(addTodoItem, action.payload);
-    yield put({ type: ADD_TODO_SUCCESS, payload: newTodo });
+    yield put({
+      type: ADD_TODO_SUCCESS,
+      payload: { oldTodo: action.payload, newTodo },
+    });
   } catch (e) {
     console.log(e.message);
   }
 }
 function* editTodo(action) {
   try {
-    yield put({ type: EDIT_TODO_ITEM_SUCCESS, payload: action.payload });
     yield call(editTodoItem, action.payload);
   } catch (e) {
     console.log(e.message);
@@ -42,8 +41,7 @@ function* editTodo(action) {
 }
 function* swapTodoItem(action) {
   try {
-    yield put({ type: SWAP_TODO_ITEM_SUCCESS, payload: action.payload });
-    yield call(editTodoItem, action.payload.todo1);
+    yield call(editTodoItem, action.payload.todo1); // phía api phát sinh lỗi, do trùng id
     yield call(editTodoItem, action.payload.todo2);
   } catch (e) {
     console.log(e.message);
@@ -59,7 +57,6 @@ function* swapTodoItem(action) {
 // }
 function* deleteTodo(action) {
   try {
-    yield put({ type: DELETE_TODO_ITEM_SUCCESS, payload: action.payload });
     yield call(deleteTodoItem, action.payload);
   } catch (e) {
     console.log(e.message);

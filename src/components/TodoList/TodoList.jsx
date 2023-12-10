@@ -37,11 +37,17 @@ const TodoList = React.forwardRef((props, ref) => {
     return todoListDisplay;
   };
   useEffect(() => {
-    (async () => {
-      await setLoadingData(true);
+    const loadingTodo = (fetchTodoList) => {
+      setLoadingData(true);
+      setTimeout(() => {
+        fetchTodoList();
+      }, 0);
+    };
+    const fetchData = () => {
       dispatch({ type: FETCH_TASK });
       setLoadingData(false);
-    })();
+    };
+    loadingTodo(fetchData);
   }, []);
   return (
     <div className={`${theme}`}>

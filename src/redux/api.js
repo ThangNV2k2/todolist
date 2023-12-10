@@ -26,6 +26,7 @@ export async function addTodoItem(todo) {
 export async function editTodoItem(todo) {
   try {
     const response = await axios.put(`${endpoint_api}/${todo.id}`, todo);
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.log(err);

@@ -6,11 +6,8 @@ import {
   ADD_TODO,
   ADD_TODO_SUCCESS,
   EDIT_TODO_ITEM,
-  EDIT_TODO_ITEM_SUCCESS,
   DELETE_TODO_ITEM,
-  DELETE_TODO_ITEM_SUCCESS,
   SWAP_TODO_ITEM,
-  SWAP_TODO_ITEM_SUCCESS,
   // DELETE_ALL_COMPLETED,
   // DELETE_ALL_COMPLETED_SUCCESS,
 } from "./task";
@@ -30,26 +27,25 @@ const rootReducer = (state = initialState, action) => {
         break;
       }
       case ADD_TODO: {
-        break;
-      }
-      case ADD_TODO_SUCCESS: {
         draft.push(action.payload);
         break;
       }
-      case EDIT_TODO_ITEM: {
+      case ADD_TODO_SUCCESS: {
+        const { oldTodo, newTodo } = action.payload;
+        const index = draft.findIndex((todo) => todo.id === oldTodo.id);
+        if (index !== -1) {
+          draft[index] = newTodo;
+        }
         break;
       }
-      case EDIT_TODO_ITEM_SUCCESS: {
-        const index = draft.todoList.findIndex(
-          (todo) => todo.id === action.payload.id
-        );
-        draft[index] = action.payload;
+      case EDIT_TODO_ITEM: {
+        const index = draft.findIndex((todo) => todo.id === action.payload.id);
+        if (index !== -1) {
+          draft[index] = action.payload;
+        }
         break;
       }
       case DELETE_TODO_ITEM: {
-        break;
-      }
-      case DELETE_TODO_ITEM_SUCCESS: {
         const index = draft.findIndex((todo) => todo.id === action.payload);
         if (index !== -1) {
           draft.splice(index, 1);
@@ -57,9 +53,6 @@ const rootReducer = (state = initialState, action) => {
         break;
       }
       case SWAP_TODO_ITEM: {
-        break;
-      }
-      case SWAP_TODO_ITEM_SUCCESS: {
         const { todo1, todo2 } = action.payload;
         const index1 = draft.findIndex((todo) => todo.id === todo1.id);
         const index2 = draft.findIndex((todo) => todo.id === todo2.id);

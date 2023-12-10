@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ThemeContext } from "../Theme/ThemeContext";
 import { useContext } from "react";
 import { ADD_TODO, EDIT_TODO_ITEM } from "../../redux/task";
+import { v4 as uuid } from "uuid";
 const Header = React.forwardRef((props, ref) => {
   const inputRef = useRef();
   const idUpdate = useRef(null);
@@ -15,7 +16,7 @@ const Header = React.forwardRef((props, ref) => {
     if (e.code === "Enter") {
       if (value.trim() !== "") {
         const todo = {
-          id: Date.now(),
+          id: uuid(),
           content: value.trim(),
           isCompleted: false,
         };
