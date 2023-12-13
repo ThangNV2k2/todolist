@@ -1,5 +1,6 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery, take } from "redux-saga/effects";
 import { getTodoList, addTodoItem, deleteTodoItem, editTodoItem } from "./api";
+import { channel } from "redux-saga";
 import {
   FETCH_TASK_SUCCESS,
   FETCH_TASK_FAILED,
@@ -20,6 +21,17 @@ function* fetchTodoList() {
   } catch (e) {
     yield put({ type: FETCH_TASK_FAILED, message: e.message });
   }
+  // const chan = yield call(channel);
+  // try {
+  //   const todoList = yield call(getTodoList);
+  //   yield put(chan, { type: FETCH_TASK_SUCCESS, todoList: todoList });
+  // } catch (e) {
+  //   yield put({ chan, type: FETCH_TASK_FAILED, message: e.message });
+  // }
+  // while (true) {
+  //   const action = yield take(chan);
+  //   yield put(action);
+  // }
 }
 function* addTodo(action) {
   try {

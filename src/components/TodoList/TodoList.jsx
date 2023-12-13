@@ -13,7 +13,7 @@ const TodoList = React.forwardRef((props, ref) => {
   const [loadingData, setLoadingData] = useState(false);
   const { myOption } = props;
   const { theme } = useContext(ThemeContext);
-  const { numberTodo, loadingState } = props;
+  const { numberTodo, loadingState, requestUpdate } = props;
 
   const displayTodoList = () => {
     const todoListDisplay = [];
@@ -29,7 +29,7 @@ const TodoList = React.forwardRef((props, ref) => {
           <Todo
             key={todoList[i].id}
             todo={todoList[i]}
-            requestUpdate={props.requestUpdate}
+            requestUpdate={requestUpdate}
           />
         );
       }
