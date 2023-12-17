@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import {
-  FETCH_TASK,
+  // FETCH_TASK,
   FETCH_TASK_SUCCESS,
   FETCH_TASK_FAILED,
   ADD_TODO,
@@ -15,9 +15,9 @@ const initialState = [];
 const rootReducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
-      case FETCH_TASK: {
-        break;
-      }
+      // case FETCH_TASK: {
+      //   break;
+      // }
       case FETCH_TASK_SUCCESS: {
         draft.splice(0, draft.length, ...action.todoList);
         break;

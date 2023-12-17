@@ -1,6 +1,5 @@
-import { call, put, takeEvery, take } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import { getTodoList, addTodoItem, deleteTodoItem, editTodoItem } from "./api";
-import { channel } from "redux-saga";
 import {
   FETCH_TASK_SUCCESS,
   FETCH_TASK_FAILED,
@@ -21,17 +20,6 @@ function* fetchTodoList() {
   } catch (e) {
     yield put({ type: FETCH_TASK_FAILED, message: e.message });
   }
-  // const chan = yield call(channel);
-  // try {
-  //   const todoList = yield call(getTodoList);
-  //   yield put(chan, { type: FETCH_TASK_SUCCESS, todoList: todoList });
-  // } catch (e) {
-  //   yield put({ chan, type: FETCH_TASK_FAILED, message: e.message });
-  // }
-  // while (true) {
-  //   const action = yield take(chan);
-  //   yield put(action);
-  // }
 }
 function* addTodo(action) {
   try {
@@ -87,14 +75,12 @@ function* deleteTodo(action) {
 //         console.log(e.message);
 //     }
 // }
-function* todosSaga() {
-  yield takeEvery(FETCH_TASK, fetchTodoList);
-  yield takeEvery(ADD_TODO, addTodo);
-  yield takeEvery(EDIT_TODO_ITEM, editTodo);
-  yield takeEvery(DELETE_TODO_ITEM, deleteTodo);
-  yield takeEvery(SWAP_TODO_ITEM, swapTodoItem);
-  // yield takeEvery(CHANGE_IS_COMPLETED, changeIsCompleted);
-  // yield takeEvery(DELETE_ALL_COMPLETED, deleteAllCompleted);
+function* watchTodosSaga() {
+  yield takeLatest(FETCH_TASK, fetchTodoList);
+  yield takeLatest(ADD_TODO, addTodo);
+  yield takeLatest(EDIT_TODO_ITEM, editTodo);
+  yield takeLatest(DELETE_TODO_ITEM, deleteTodo);
+  yield takeLatest(SWAP_TODO_ITEM, swapTodoItem);
 }
 
-export default todosSaga;
+export default watchTodosSaga;
