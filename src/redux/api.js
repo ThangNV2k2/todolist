@@ -1,5 +1,7 @@
 import axios from "axios";
 import { call } from "redux-saga/effects";
+
+// mock api
 export const endpoint_api =
   "https://6563668aee04015769a72825.mockapi.io/api/v1/todoList";
 
@@ -41,12 +43,3 @@ export function* deleteTodoItem(id) {
     throw err;
   }
 }
-// export async function changeIsCompleted(todo) {
-//     try {
-//         const response = await axios.put(`${endpoint_api}/${todo.id}`, todo);
-//         return response.data;
-//       } catch (err) {
-//         console.log(err);
-//         throw err;
-//       }
-// }

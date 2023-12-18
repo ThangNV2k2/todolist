@@ -9,8 +9,6 @@ import {
   EDIT_TODO_ITEM,
   DELETE_TODO_ITEM,
   SWAP_TODO_ITEM,
-  //   DELETE_ALL_COMPLETED,
-  //   DELETE_ALL_COMPLETED_SUCCESS,
 } from "./task";
 
 function* fetchTodoList() {
@@ -47,14 +45,6 @@ function* swapTodoItem(action) {
     console.log(e.message);
   }
 }
-// function* changeIsCompleted(action) {
-//     try {
-//         yield call(editTodoItem, action.payload);
-//         yield put({type: CHANGE_IS_COMPLETED_SUCCESS, payload: action.payload.id});
-//     } catch (e) {
-//         console.log(e.message);
-//     }
-// }
 function* deleteTodo(action) {
   try {
     yield call(deleteTodoItem, action.payload);
@@ -62,19 +52,6 @@ function* deleteTodo(action) {
     console.log(e.message);
   }
 }
-// function* deleteAllCompleted() {
-//     try {
-//         const todoList = yield select(state => state.todos.todoList);
-//         for (const todo of todoList) {
-//             if (todo.isCompleted === true) {
-//                 yield call(deleteTodoItem, todo.id);
-//             }
-//         }
-//         yield put({type: DELETE_ALL_COMPLETED_SUCCESS});
-//     } catch (e) {
-//         console.log(e.message);
-//     }
-// }
 function* watchTodosSaga() {
   yield takeLatest(FETCH_TASK, fetchTodoList);
   yield takeLatest(ADD_TODO, addTodo);
